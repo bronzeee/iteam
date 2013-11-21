@@ -35,16 +35,16 @@ public class TeamMainActivity extends FragmentActivity {
             TestFragment.class
     };
     private int[] itemNames = new int[]{
-            R.string.game,
-            R.string.contact,
-            R.string.tab_3,
-            R.string.tab_4
+            R.string.team,
+            R.string.message,
+            R.string.location,
+            R.string.setting
     };
     private int[] icons = new int[]{
-            R.string.game_controller,
-            R.string.person,
-            R.string.briefcase,
-            R.string.settings
+            R.string.people,
+            R.string.chatboxes,
+            R.string.earth,
+            R.string.gear
     };
     private int currIndex = 0;
     private Resources resources;
@@ -83,7 +83,7 @@ public class TeamMainActivity extends FragmentActivity {
             TextView imageView = new TextView(this);
             imageView.setText(icons[i]);
             imageView.setTypeface(tf);
-            imageView.setTextSize(24);
+            imageView.setTextSize(32);
             imageView.setGravity(Gravity.CENTER);
             imageView.setTag("ImageView");
             imageView.setTextColor(resources.getColor(i == currIndex ? R.color.lightWhite : R.color.white));
