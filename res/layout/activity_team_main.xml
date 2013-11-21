@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:view="http://schemas.android.com/apk/res/com.opticaline.groupactivity"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:orientation="vertical">
+        <android.support.v4.view.ViewPager
+                android:id="@+id/vPager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1.0"
+                android:flipInterval="30"
+                android:persistentDrawingCache="animation"/>
+
+        <LinearLayout
+                android:id="@+id/textViewPanel"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="5dip"
+                android:paddingTop="5dip"
+                android:orientation="horizontal">
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:paddingBottom="3dip">
+
+            <ImageView
+                    android:id="@+id/iv_bottom_line"
+                    android:layout_width="70dip"
+                    android:layout_height="2dip"
+                    android:layout_marginLeft="10dip"
+                    android:scaleType="matrix"
+                    android:src="@color/lightWhite"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

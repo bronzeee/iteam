@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">iTeam</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="trend">Trend</string>
+    <string name="game">Game</string>
+    <string name="contact">Contacts</string>
+    <string name="tab_3">Friends</string>
+    <string name="tab_4">Conversation</string>
+    <string name="chatboxes">&#xf11c;</string>
+    <string name="person">&#xf1c2;</string>
+    <string name="briefcase">&#xf26c;</string>
+    <string name="settings">&#xf2ad;</string>
+    <string name="game_controller">&#xf13c;</string>
+
+</resources>
