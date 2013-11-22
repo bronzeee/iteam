@@ -2,26 +2,27 @@ package com.houniao.iteam;
 
 import java.util.ArrayList;
 
-import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.Window;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
+import com.houniao.iteam.service.CommunicateService;
+import com.houniao.iteam.service.CustomServiceAction;
 
 public class TeamMainActivity extends FragmentActivity {
     private ViewPager mPager;
@@ -32,7 +33,7 @@ public class TeamMainActivity extends FragmentActivity {
             TestFragment.class,
             TestFragment.class,
             TestFragment.class,
-            TestFragment.class
+            SettingFragment.class
     };
     private int[] itemNames = new int[]{
             R.string.team,
@@ -48,6 +49,8 @@ public class TeamMainActivity extends FragmentActivity {
     };
     private int currIndex = 0;
     private Resources resources;
+    private LocalBroadcastManager mLocalBroadcastManager;
+    private BroadcastReceiver mReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,9 +58,26 @@ public class TeamMainActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_team_main);
         resources = getResources();
+        //界面初始化
         init();
-    }
 
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+        //启动service
+
+        if(!isServiceRunning()){
+            startService(new Intent(this, CommunicateService.class));
+        }
+        //stopService(new Intent(TeamMainActivity.this, CommunicateService.class));
+    }
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (CommunicateService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     private void init() {
         mPager = (ViewPager) findViewById(R.id.vPager);
         ArrayList<Fragment> fragmentsList = new ArrayList<Fragment>();
@@ -125,10 +145,10 @@ public class TeamMainActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int i) {
                 Animation animation = new TranslateAnimation(positions.get(currIndex), positions.get(i), 0, 0);
-                ((TextView)textViews.get(i).findViewWithTag("TextView")).setTextColor(resources.getColor(R.color.lightWhite));
-                ((TextView)textViews.get(currIndex).findViewWithTag("TextView")).setTextColor(resources.getColor(R.color.white));
-                ((TextView)textViews.get(i).findViewWithTag("ImageView")).setTextColor(resources.getColor(R.color.lightWhite));
-                ((TextView)textViews.get(currIndex).findViewWithTag("ImageView")).setTextColor(resources.getColor(R.color.white));
+                ((TextView) textViews.get(i).findViewWithTag("TextView")).setTextColor(resources.getColor(R.color.lightWhite));
+                ((TextView) textViews.get(currIndex).findViewWithTag("TextView")).setTextColor(resources.getColor(R.color.white));
+                ((TextView) textViews.get(i).findViewWithTag("ImageView")).setTextColor(resources.getColor(R.color.lightWhite));
+                ((TextView) textViews.get(currIndex).findViewWithTag("ImageView")).setTextColor(resources.getColor(R.color.white));
                 currIndex = i;
                 animation.setFillAfter(true);
                 animation.setDuration(300);
@@ -140,5 +160,80 @@ public class TeamMainActivity extends FragmentActivity {
 
             }
         });
+    }
+
+    /**
+     * 创建PopupWindow
+     */
+    protected void initPopupWindow() {
+        // TODO Auto-generated method stub
+        // 获取自定义布局文件activity_popupwindow_left.xml的视图
+        View popupWindow_view = getLayoutInflater().inflate(R.layout.popup_window, null,
+                false);
+        // 创建PopupWindow实例,200,150分别是宽度和高度
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        Log.i("CommunicateService", displaymetrics.widthPixels + "");
+        popupWindow = new PopupWindow(popupWindow_view, displaymetrics.widthPixels - (20 * 2), 150, true);
+        // 设置动画效果
+        popupWindow.setAnimationStyle(R.anim.popup_in_bottom2top);
+        // 点击其他地方消失
+        popupWindow_view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                    popupWindow = null;
+                }
+                return false;
+            }
+        });
+        // activity_popupwindow_left.xml视图里面的控件
+        Button open = (Button) popupWindow_view.findViewById(R.id.open);
+        // activity_popupwindow_left.xml视图里面的控件触发的事件
+        // 打开
+        open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+
+    /***
+     * 获取PopupWindow实例
+     */
+    private void getPopupWindow() {
+        if (null != popupWindow) {
+            popupWindow.dismiss();
+            return;
+        } else {
+            initPopupWindow();
+        }
+    }
+
+    private PopupWindow popupWindow;
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        Log.i("CommunicateService","onMenuItemSelected");
+        return super.onMenuItemSelected(featureId, item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_MENU) {
+            getPopupWindow();
+            popupWindow.showAsDropDown(findViewById(R.id.iv_bottom_line));
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.i("CommunicateService", "onBackPressed");
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_HOME);
+        startActivity(i);
+        //super.onBackPressed();
     }
 }

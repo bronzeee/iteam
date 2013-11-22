@@ -1,6 +1,9 @@
 package com.houniao.iteam;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +28,9 @@ public class TestFragment extends Fragment {
         View view = inflater.inflate(R.layout.test_layout, container, false);
         TextView hello = (TextView) view.findViewById(R.id.hello);
         hello.setText(defaultHello);
+
+
+
         return view;
 
     }

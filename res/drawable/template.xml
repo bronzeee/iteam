@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="false" android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+               android:shape="rectangle">
+            <stroke android:width="1dp" android:color="#000000"/>
+            <gradient
+                    android:startColor="#ffbfbfbf"
+                    android:endColor="#ffbfbfbf"/>
+            <padding
+                    android:left="2dp"
+                    android:top="7dp"
+                    android:right="2dp"
+                    android:bottom="7dp"/>
+            <corners android:topLeftRadius="10dp" android:topRightRadius="10dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:shape="rectangle">
+            <stroke android:width="1dp" android:color="#000000"/>
+            <gradient
+                    android:startColor="#FFFFFF"
+                    android:endColor="#FFFFFF"/>
+            <padding
+                    android:left="2dp"
+                    android:top="7dp"
+                    android:right="2dp"
+                    android:bottom="7dp"/>
+            <corners android:topLeftRadius="10dp" android:topRightRadius="10dp"/>
+        </shape>
+    </item>
+    <!--
+    <item android:state_window_focused="false" android:drawable="@drawable/没有焦点时图片背景"/>
+    <item android:state_focused="true" android:state_pressed="true"
+          android:drawable="@drawable/非触摸模式下获得焦点并单击时的背景图片"/>
+    &lt;!&ndash;双条件&ndash;&gt;
+    <item android:state_selected="true" android:drawable="@drawable/选中时的图片背景"/>
+    <item android:state_focused="true" android:drawable="@drawable/获得焦点时的图片背景"/>-->
+    <!--default color 当对应状态下没有定义时使用此default -->
+</selector>

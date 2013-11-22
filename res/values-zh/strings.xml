@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">iTeam</string>
+    <string name="app_name">埃提姆</string>
     <string name="hello_world">Hello world!</string>
     <string name="trend">Trend</string>
     <string name="team">团队</string>
     <string name="message">消息</string>
     <string name="location">位置</string>
     <string name="setting">设置</string>
+    <string name="setting1">&#xf2ad;&#160;&#160;设置1</string>
+    <string name="setting2">&#xf2ad;&#160;&#160;设置2</string>
+    <string name="setting3">&#xf2ad;&#160;&#160;设置3</string>
 
 </resources>
