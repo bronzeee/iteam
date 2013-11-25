@@ -2,15 +2,15 @@ package com.houniao.iteam;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.AlertDialog;
+import android.annotation.TargetApi;
+import android.app.*;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +23,7 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.*;
+import com.baidu.mapapi.BMapManager;
 import com.houniao.iteam.service.CommunicateService;
 
 public class TeamMainActivity extends FragmentActivity {
@@ -33,7 +34,7 @@ public class TeamMainActivity extends FragmentActivity {
     private Class<Fragment>[] tabParams = new Class[]{
             TestFragment.class,
             TestFragment.class,
-            TestFragment.class,
+            MapFragment.class,
             SettingFragment.class
     };
     private int[] itemNames = new int[]{
@@ -54,10 +55,14 @@ public class TeamMainActivity extends FragmentActivity {
     private BroadcastReceiver mReceiver;
     private PopupWindow closeWindow;
 
+    BMapManager mBMapMan = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mBMapMan = new BMapManager(getApplication());
+        mBMapMan.init("827550e53162134a2973e545099b0ede", null);
         setContentView(R.layout.activity_team_main);
         resources = getResources();
         //界面初始化
@@ -124,7 +129,6 @@ public class TeamMainActivity extends FragmentActivity {
                 @Override
                 public void onClick(View view) {
                     mPager.setCurrentItem(textViews.indexOf(view));
-                    Log.i("info", "onclick");
                 }
             });
             textViewPanel.addView(relativeLayout);
