@@ -165,38 +165,6 @@ public class TeamMainActivity extends FragmentActivity {
             }
         });
     }
-/*
-    *//**
-     * 创建PopupWindow
-     *//*
-    protected void initPopupWindow() {
-        View popupWindow_view = getLayoutInflater().inflate(R.layout.popup_window, null,
-                false);
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        closeWindow = new PopupWindow(popupWindow_view, displaymetrics.widthPixels, 150, true);
-        closeWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置动画效果
-        closeWindow.setAnimationStyle(R.anim.popup_in_bottom2top);
-        // 点击其他地方消失
-        popupWindow_view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (closeWindow != null && closeWindow.isShowing()) {
-                    closeWindow.dismiss();
-                    closeWindow = null;
-                }
-                return false;
-            }
-        });
-        Button close = (Button) popupWindow_view.findViewById(R.id.open);
-        close.setTypeface(Typeface.createFromAsset(getAssets(), "ionicons.ttf"));
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-    }*/
 
     /**
      * 获取PopupWindow实例
