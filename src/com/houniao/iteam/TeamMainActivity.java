@@ -217,10 +217,10 @@ public class TeamMainActivity extends FragmentActivity {
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(self);
-                    builder.setMessage("确认退出吗？");
-                    builder.setTitle("提示");
-                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(self, android.R.style.Theme_Holo_Dialog));
+                    builder.setMessage(R.string.exit_message);
+                    builder.setTitle(R.string.exit_title);
+                    builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -228,7 +228,7 @@ public class TeamMainActivity extends FragmentActivity {
                             self.finish();
                         }
                     });
-                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
