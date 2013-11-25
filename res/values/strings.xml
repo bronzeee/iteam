@@ -16,6 +16,9 @@
     <string name="earth">&#xf1a6;</string>
     <string name="gear">&#xf13e;</string>
     <string name="chevron_right">&#xf125;</string>
+
+    <string name="close">&#xf128;Close</string>
+
     <string name="setting1">&#xf2ad;&#160;&#160;设置1</string>
     <string name="setting2">&#xf2ad;&#160;&#160;设置2</string>
     <string name="setting3">&#xf2ad;&#160;&#160;设置3</string>

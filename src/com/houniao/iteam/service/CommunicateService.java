@@ -45,21 +45,26 @@ public class CommunicateService extends Service {
         super.onCreate();
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         mLocalBroadcastManager.sendBroadcast(new Intent(CustomServiceAction.ACTION_STARTED));
-
-        try {
-            Socket socket = new Socket("192.168.5.104", 9556);
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter pw = new PrintWriter(socket.getOutputStream());
-            pw.write("connect!");
-            pw.flush();
-            while(true){
-                if(br.ready()){
-                    Log.i("CommunicateService", br.readLine());
+/*        Runnable runnable = new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket("192.168.5.104", 9556);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                    pw.write("connect!");
+                    pw.flush();
+                    while(true){
+                        if(br.ready()){
+                            Log.i("CommunicateService", br.readLine());
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        };
+        new Thread(runnable).start();*/
 
         // Prepare to do update reports.
         mHandler.removeMessages(MSG_UPDATE);

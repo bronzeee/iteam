@@ -2,6 +2,7 @@ package com.houniao.iteam;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -166,15 +168,12 @@ public class TeamMainActivity extends FragmentActivity {
      * 创建PopupWindow
      */
     protected void initPopupWindow() {
-        // TODO Auto-generated method stub
-        // 获取自定义布局文件activity_popupwindow_left.xml的视图
         View popupWindow_view = getLayoutInflater().inflate(R.layout.popup_window, null,
                 false);
-        // 创建PopupWindow实例,200,150分别是宽度和高度
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        Log.i("CommunicateService", displaymetrics.widthPixels + "");
-        popupWindow = new PopupWindow(popupWindow_view, displaymetrics.widthPixels - (20 * 2), 150, true);
+        popupWindow = new PopupWindow(popupWindow_view, displaymetrics.widthPixels, 150, true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置动画效果
         popupWindow.setAnimationStyle(R.anim.popup_in_bottom2top);
         // 点击其他地方消失
@@ -188,11 +187,9 @@ public class TeamMainActivity extends FragmentActivity {
                 return false;
             }
         });
-        // activity_popupwindow_left.xml视图里面的控件
-        Button open = (Button) popupWindow_view.findViewById(R.id.open);
-        // activity_popupwindow_left.xml视图里面的控件触发的事件
-        // 打开
-        open.setOnClickListener(new View.OnClickListener() {
+        Button close = (Button) popupWindow_view.findViewById(R.id.open);
+        close.setTypeface(Typeface.createFromAsset(getAssets(), "ionicons.ttf"));
+        close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
@@ -222,7 +219,8 @@ public class TeamMainActivity extends FragmentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_MENU) {
             getPopupWindow();
-            popupWindow.showAsDropDown(findViewById(R.id.iv_bottom_line));
+            popupWindow.showAsDropDown(findViewById(R.id.iv_bottom_line), 0 , -7);
+            //popupWindow.showAtLocation(getCurrentFocus(), Gravity.BOTTOM, 10,10);
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -230,10 +228,10 @@ public class TeamMainActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         Log.i("CommunicateService", "onBackPressed");
-        Intent i = new Intent(Intent.ACTION_MAIN);
+/*        Intent i = new Intent(Intent.ACTION_MAIN);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addCategory(Intent.CATEGORY_HOME);
-        startActivity(i);
-        //super.onBackPressed();
+        startActivity(i);*/
+        super.onBackPressed();
     }
 }
