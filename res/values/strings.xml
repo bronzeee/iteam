@@ -19,6 +19,11 @@
 
     <string name="close">&#xf128;Close</string>
 
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit_title">Close app?</string>
+    <string name="exit_message">确认退出吗?</string>
+
     <string name="setting1">&#xf2ad;&#160;&#160;设置1</string>
     <string name="setting2">&#xf2ad;&#160;&#160;设置2</string>
     <string name="setting3">&#xf2ad;&#160;&#160;设置3</string>

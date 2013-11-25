@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,7 +24,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.*;
 import com.houniao.iteam.service.CommunicateService;
-import com.houniao.iteam.service.CustomServiceAction;
 
 public class TeamMainActivity extends FragmentActivity {
     private ViewPager mPager;
@@ -53,6 +52,7 @@ public class TeamMainActivity extends FragmentActivity {
     private Resources resources;
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mReceiver;
+    private PopupWindow closeWindow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,11 +66,12 @@ public class TeamMainActivity extends FragmentActivity {
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         //启动service
 
-        if(!isServiceRunning()){
+        if (!isServiceRunning()) {
             startService(new Intent(this, CommunicateService.class));
         }
         //stopService(new Intent(TeamMainActivity.this, CommunicateService.class));
     }
+
     private boolean isServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -80,6 +81,7 @@ public class TeamMainActivity extends FragmentActivity {
         }
         return false;
     }
+
     private void init() {
         mPager = (ViewPager) findViewById(R.id.vPager);
         ArrayList<Fragment> fragmentsList = new ArrayList<Fragment>();
@@ -163,26 +165,26 @@ public class TeamMainActivity extends FragmentActivity {
             }
         });
     }
-
-    /**
+/*
+    *//**
      * 创建PopupWindow
-     */
+     *//*
     protected void initPopupWindow() {
         View popupWindow_view = getLayoutInflater().inflate(R.layout.popup_window, null,
                 false);
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        popupWindow = new PopupWindow(popupWindow_view, displaymetrics.widthPixels, 150, true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        closeWindow = new PopupWindow(popupWindow_view, displaymetrics.widthPixels, 150, true);
+        closeWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置动画效果
-        popupWindow.setAnimationStyle(R.anim.popup_in_bottom2top);
+        closeWindow.setAnimationStyle(R.anim.popup_in_bottom2top);
         // 点击其他地方消失
         popupWindow_view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                    popupWindow = null;
+                if (closeWindow != null && closeWindow.isShowing()) {
+                    closeWindow.dismiss();
+                    closeWindow = null;
                 }
                 return false;
             }
@@ -194,33 +196,63 @@ public class TeamMainActivity extends FragmentActivity {
             public void onClick(View v) {
             }
         });
-    }
+    }*/
 
-    /***
+    /**
      * 获取PopupWindow实例
      */
-    private void getPopupWindow() {
-        if (null != popupWindow) {
-            popupWindow.dismiss();
+    private void getCloseWindow() {
+        if (null != closeWindow) {
+            closeWindow.dismiss();
             return;
         } else {
-            initPopupWindow();
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+            CustomPopupWindow customPopupWindow = new CustomPopupWindow(this, R.layout.popup_window, displaymetrics.widthPixels, 150);
+            customPopupWindow.setAnimationStyle(R.anim.popup_in_bottom2top);
+            Button close = (Button) customPopupWindow.findViewById(R.id.open);
+            close.setTypeface(Typeface.createFromAsset(getAssets(), "ionicons.ttf"));
+            final Activity self = this;
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(self);
+                    builder.setMessage("确认退出吗？");
+                    builder.setTitle("提示");
+                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            stopService(new Intent(TeamMainActivity.this, CommunicateService.class));
+                            self.finish();
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                }
+            });
+            closeWindow = customPopupWindow.getPopupWindow();
         }
     }
 
-    private PopupWindow popupWindow;
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        Log.i("CommunicateService","onMenuItemSelected");
+        Log.i("CommunicateService", "onMenuItemSelected");
         return super.onMenuItemSelected(featureId, item);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU) {
-            getPopupWindow();
-            popupWindow.showAsDropDown(findViewById(R.id.iv_bottom_line), 0 , -7);
-            //popupWindow.showAtLocation(getCurrentFocus(), Gravity.BOTTOM, 10,10);
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            getCloseWindow();
+            closeWindow.showAsDropDown(findViewById(R.id.iv_bottom_line), 0, -7);
+            //closeWindow.showAtLocation(getCurrentFocus(), Gravity.BOTTOM, 10,10);
         }
         return super.onKeyDown(keyCode, event);
     }
